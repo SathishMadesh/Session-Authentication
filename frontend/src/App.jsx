@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import Cookies from 'universal-cookie'
+import React from 'react';
+import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
@@ -10,7 +10,7 @@ class App extends React.Component{
       username:"",
       password:"",
       error:"",
-      isauthenticated: false,
+      isAuthenticated: false,
     };
   }
 
@@ -25,10 +25,10 @@ class App extends React.Component{
     .then((res)=>res.json())
     .then((data)=>{
       console.log(data);
-      if(data.isauthenticated) {
-        this.setState({isauthenticated: true});
+      if(data.isAuthenticated) {
+        this.setState({isAuthenticated: true});
       }else{
-        this.setState({isauthenticated: false});
+        this.setState({isAuthenticated: false});
       }
     })
     .catch((err)=>{
@@ -79,10 +79,10 @@ class App extends React.Component{
       body: JSON.stringify(
         {username: this.state.username,
         password: this.state.password})
-        .then(this.ifResponseOk)
+        .then(this.isResponseOk)
         .then((data)=>{
           console.log(data);
-          this.setState({isauthenticated:true, username:"",
+          this.setState({isAuthenticated:true, username:"",
         password:"", error:""});
         })
         .catch((err)=>{
@@ -101,11 +101,25 @@ class App extends React.Component{
     .then(this.isResponseOk)
     .then((data) => {
       console.log(data);
-      this.setState({isauthenticated:false});
+      this.setState({isAuthenticated:false});
     })
     .catch((err)=>{
       console.log(err);
     })
   }
+
+  render(){
+
+    if (!this.state.isAuthenticated) {
+      return(
+        <div className="container mt-3">
+          <h1>React Cookie Auth</h1>
+        </div>
+      )
+    }
+
+  }
+
 }
 
+export default App;
