@@ -58,7 +58,7 @@ class App extends React.Component{
     this.setState({username:event.target.value});
   }
 
-  ifResponseOk(response){
+  isResponseOk(response){
     if (response.status >= 200 && response.status <= 299) {
       return response.json();
     }else{
@@ -89,6 +89,22 @@ class App extends React.Component{
           console.log(err);
           this.setState({error: "Wrong username or password"})
         })
+    })
+  }
+
+  // logout
+
+  logout = () => {
+    fetch("/api/logout",{
+      credentials: "same-origin",
+    })
+    .then(this.isResponseOk)
+    .then((data) => {
+      console.log(data);
+      this.setState({isauthenticated:false});
+    })
+    .catch((err)=>{
+      console.log(err);
     })
   }
 }
